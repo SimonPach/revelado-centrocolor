@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Revelado de fotos · Centro Color</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Inter:wght@400;500;600&family=Fraunces:ital,opsz,wght@1,9..144,400;1,9..144,500;1,9..144,600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.47.0/tabler-icons.min.css">
+<style>
+:root{
+  --bg:#14181f; --bg2:#1b212b; --card:#1d242f; --card-soft:#1a212b;
+  --gold:#d4af6a; --gold-light:#E7C77E; --cream:#F5EFE6;
+  --text-soft:#CFC8BC; --muted:#8A93A2; --border:#2c333f;
+  --green:#46b06a; --red:#E07A6F; --amber:#E0B050;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{
+  background:var(--bg); color:var(--cream);
+  font-family:'Inter',system-ui,sans-serif; font-size:16px; line-height:1.6;
+  min-height:100vh;
+}
+.wrap{max-width:920px;margin:0 auto;padding:24px 18px 80px}
+
+/* Header */
+.top{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:6px 0 22px;border-bottom:1px solid var(--border);margin-bottom:26px}
+.top .brand{display:flex;align-items:center;gap:14px;min-width:0}
+.top .logo{width:46px;height:46px;border-radius:50%;background:radial-gradient(circle at 50% 40%,var(--gold-light),var(--gold) 70%);flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.top .logo i{font-size:24px;color:#1a1408}
+.top h1{font-family:'Fraunces',serif;font-style:italic;font-weight:600;font-size:22px;letter-spacing:.01em;color:var(--cream)}
+.top .sub{font-size:12.5px;color:var(--muted);font-weight:400}
+.top .backsite{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--muted);white-space:nowrap;transition:color .2s;flex-shrink:0}
+.top .backsite:hover{color:var(--gold)}
+.top .backsite i{font-size:16px}
+/* identidad de marca: datos/specs en Space Mono */
+.steps .st .n,.barin .tv,.code,.tcell .tm,.minimeta{font-family:'Space Mono',monospace}
+
+/* Stepper */
+.steps{display:flex;gap:8px;margin-bottom:28px;flex-wrap:wrap}
+.steps .st{position:relative;flex:1;min-width:90px;display:flex;align-items:center;gap:9px;padding:11px 13px;border:1px solid var(--border);border-radius:12px;background:var(--card-soft);font-size:13.5px;color:var(--muted);transition:.25s}
+/* línea conectora entre pasos */
+.steps .st + .st::before{content:"";position:absolute;left:-8px;top:50%;width:8px;height:2px;background:var(--border);transform:translateY(-50%);transition:.25s}
+.steps .st.done + .st::before{background:var(--gold)}
+.steps .st .n{width:22px;height:22px;border-radius:50%;border:1px solid var(--muted);display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;transition:.25s}
+.steps .st.active{border-color:var(--gold);color:var(--cream);background:linear-gradient(180deg,rgba(201,169,97,.12),transparent)}
+.steps .st.active .n{border-color:var(--gold);background:var(--gold);color:#1a1408;font-weight:600}
+.steps .st.done{border-color:rgba(70,176,106,.45);color:var(--text-soft)}
+.steps .st.done .n{border-color:var(--green);background:var(--green);font-size:0}
+.steps .st.done .n::after{content:"";width:5px;height:9px;border:2px solid #0c1a10;border-top:0;border-left:0;transform:rotate(45deg);margin-top:-2px}
+
+h2.sec{font-family:'Poppins',sans-serif;font-weight:500;font-size:20px;margin-bottom:5px;color:var(--cream)}
+p.lead{color:var(--text-soft);font-size:14.5px;margin-bottom:20px}
+
+/* Dropzone */
+.drop{border:1.5px dashed #3a3a3a;border-radius:16px;padding:38px 20px;text-align:center;background:var(--card-soft);cursor:pointer;transition:border-color .2s,background .2s,box-shadow .2s,transform .2s}
+.drop:hover{border-color:var(--gold);background:rgba(201,169,97,.05);box-shadow:0 10px 30px rgba(0,0,0,.22)}
+.drop.over{border-color:var(--gold);border-style:solid;background:rgba(201,169,97,.09);transform:scale(.99)}
+.drop .ic{font-size:30px;color:var(--gold);margin-bottom:8px}
+.drop b{font-family:'Poppins',sans-serif;font-weight:500;color:var(--cream);font-size:16px}
+.drop span{display:block;color:var(--muted);font-size:13px;margin-top:4px}
+
+/* Grilla previews */
+.gridhead{display:flex;justify-content:space-between;align-items:center;margin:22px 0 12px;font-size:13.5px;color:var(--text-soft)}
+.gridhead b{color:var(--cream);font-weight:600}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(98px,1fr));gap:10px}
+.thumb{position:relative;aspect-ratio:1;border-radius:11px;overflow:hidden;border:1px solid var(--border);background:var(--bg2)}
+.thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.thumbload{width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:var(--bg2)}
+.spin{width:22px;height:22px;border:2.5px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.thumberr{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--bg2);color:var(--muted);font-size:10px;text-align:center;line-height:1.3}
+.thumberr i.ti{font-size:22px;margin-bottom:4px;color:var(--red)}
+.thumb .name{position:absolute;left:0;right:0;bottom:0;background:rgba(0,0,0,.72);color:var(--text-soft);font-size:10px;padding:3px 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.thumb .del{position:absolute;top:5px;right:5px;width:22px;height:22px;border-radius:50%;background:rgba(0,0,0,.6);border:none;color:#fff;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1}
+.thumb .del:hover{background:var(--red)}
+
+/* Item rows (paso 2) */
+.item{display:flex;align-items:flex-start;gap:13px;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:11px 13px;margin-bottom:9px}
+.item .mini{width:44px;height:44px;border-radius:8px;overflow:hidden;flex-shrink:0;background:var(--bg2)}
+.item .mini img{width:100%;height:100%;object-fit:cover}
+.item .fn{flex:1;font-size:13px;color:var(--text-soft);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:60px}
+select,input[type=text],input[type=tel],textarea{
+  font-family:inherit;font-size:14px;color:var(--cream);background:var(--bg2);
+  border:1px solid var(--border);border-radius:9px;padding:8px 10px;outline:none
+}
+select{cursor:pointer;min-width:96px}
+select:focus,input:focus,textarea:focus{border-color:var(--gold)}
+option{background:var(--bg2);color:var(--cream)}
+.chk{display:flex;align-items:center;gap:5px;font-size:13px;color:var(--text-soft);white-space:nowrap;cursor:pointer;user-select:none}
+.chk input{accent-color:var(--gold);width:16px;height:16px}
+.qty{display:flex;align-items:center;gap:7px}
+.qty button{width:28px;height:28px;border-radius:7px;border:1px solid var(--border);background:var(--bg2);color:var(--cream);font-size:16px;cursor:pointer;line-height:1}
+.qty button:hover{border-color:var(--gold)}
+.qty b{min-width:18px;text-align:center;font-size:14px}
+.iconbtn{width:34px;height:34px;border-radius:8px;border:1px solid var(--border);background:var(--bg2);color:var(--text-soft);cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.iconbtn:hover{border-color:var(--gold);color:var(--gold)}
+.iconbtn.has{border-color:var(--gold);color:var(--gold)}
+
+/* Zona 7x10 */
+.zona{margin-top:26px;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px 17px}
+.zona .zh{display:flex;align-items:center;gap:9px;margin-bottom:4px}
+.zona .zh .dot{width:8px;height:8px;border-radius:50%;background:var(--gold)}
+.zona .zh b{font-family:'Poppins',sans-serif;font-weight:500;font-size:16px}
+.zona .zhd{font-size:13px;color:var(--muted);margin-bottom:14px}
+.pool{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:16px}
+.chip{display:flex;align-items:center;gap:6px;background:var(--bg2);border:1px solid var(--border);border-radius:9px;padding:6px 9px;font-size:12px;color:var(--text-soft);cursor:grab}
+.chip.used{opacity:.4}
+.chip .ci{width:8px;height:8px;border-radius:2px;background:var(--gold)}
+.hoja{background:var(--card-soft);border:1px solid var(--border);border-radius:12px;padding:12px;margin-bottom:11px}
+.hoja.editando{border-color:var(--gold)}
+.hoja .hh{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px}
+.hoja .hh .ht{font-size:13px;font-weight:600;color:var(--gold)}
+.orient{display:inline-flex;background:var(--bg2);border:1px solid var(--border);border-radius:9px;padding:3px;gap:3px}
+.orient button{display:flex;align-items:center;gap:6px;padding:7px 13px;border:none;background:transparent;color:var(--text-soft);border-radius:7px;font-size:12.5px;cursor:pointer;font-family:inherit;font-weight:500}
+.orient button svg{width:15px;height:15px}
+.orient button.on{background:var(--gold);color:#1a1408}
+.okhoja{padding:6px 13px;border:1px solid var(--green);background:rgba(91,185,140,.12);color:var(--green);border-radius:8px;font-size:12.5px;cursor:pointer;font-family:inherit}
+.okhoja:hover{background:rgba(91,185,140,.22)}
+.hojaprev{background:#fff;border:1px solid var(--border);border-radius:4px;overflow:hidden;box-shadow:0 0 0 6px var(--card-soft)}
+.hslot{flex:1;position:relative;overflow:hidden;background:#efece4;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:4px}
+.hslot.big{min-width:0}
+.hslot+.hslot{box-shadow:-1px 0 0 #ccc}
+.hojaprev[style*="column"] .hslot+.hslot{box-shadow:0 -1px 0 #ccc}
+.hslot .ph{color:#999;font-size:24px}
+.hslot .pht{color:#999;font-size:11px}
+.hslot .editbox.draggable{cursor:grab}
+.hslot .rm{position:absolute;top:4px;right:4px;width:22px;height:22px;border-radius:50%;background:rgba(0,0,0,.6);border:none;color:#fff;font-size:13px;cursor:pointer;z-index:4}
+.hslot .fit{position:absolute;bottom:5px;left:50%;transform:translateX(-50%);display:flex;gap:4px;z-index:4}
+.hslot .fit button{background:rgba(0,0,0,.66);border:none;color:#fff;border-radius:5px;font-size:11px;padding:3px 9px;cursor:pointer;white-space:nowrap}
+.hslot .fit button.on{background:var(--gold);color:#1a1408}
+.sacar710{position:absolute;top:5px;left:5px;background:rgba(0,0,0,.66);border:none;color:var(--gold-light);border-radius:6px;font-size:10.5px;padding:3px 8px;cursor:pointer;z-index:4}
+.sacar710:hover{background:var(--gold);color:#1a1408}
+.hojahint{text-align:center;font-size:11.5px;color:var(--muted);margin-top:8px}
+.hojamini{display:inline-flex;align-items:center;gap:10px;background:var(--card-soft);border:1px solid var(--border);border-radius:10px;padding:8px 10px;margin:0 8px 8px 0;cursor:pointer;vertical-align:top}
+.hojamini:hover{border-color:var(--gold)}
+.hmprev{background:#fff;border-radius:3px;overflow:hidden;flex-shrink:0;box-shadow:0 0 0 2px var(--card-soft)}
+.hmprev .ms{flex:1;overflow:hidden;position:relative;background:#efece4}
+.hmprev .ms img{width:100%;height:100%}
+.hmprev .ms+.ms{box-shadow:-1px 0 0 #ccc}
+.hmprev[style*="column"] .ms+.ms{box-shadow:0 -1px 0 #ccc}
+.hmlabel{font-size:12px;color:var(--text-soft);line-height:1.3}
+.hmlabel span{font-size:10.5px;color:var(--muted)}
+.hmedit{margin-left:4px;padding:5px 10px;border:1px solid var(--border);background:var(--bg2);color:var(--gold);border-radius:7px;font-size:11px;cursor:pointer}
+.fitsw{display:flex;gap:3px}
+.fitsw button{padding:5px 8px;border:1px solid var(--border);background:var(--bg2);color:var(--text-soft);border-radius:6px;font-size:11px;cursor:pointer;white-space:nowrap}
+.fitsw button.on{border-color:var(--gold);color:var(--gold)}
+.prevbox{position:relative;cursor:pointer;flex-shrink:0;align-self:center}
+.prevbox:hover .prevframe{border-color:var(--gold);box-shadow:0 0 0 2px rgba(201,169,97,.3)}
+.prevframe{background:#fff;border:1px solid var(--border);border-radius:5px;overflow:hidden;position:relative;transition:.15s}
+.prevzoom{position:absolute;bottom:3px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.72);color:var(--gold);font-size:9.5px;padding:2px 7px;border-radius:5px;white-space:nowrap;opacity:.85}
+/* Foto en edicion (grande) */
+.bigitem{background:var(--card);border:1.5px solid var(--gold);border-radius:13px;padding:15px;margin-bottom:11px}
+.bighead{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:9px}
+.bigtitle{font-size:13.5px;font-weight:600;color:var(--gold)}
+.bigactions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.bigtools{display:flex;gap:7px;justify-content:center;flex-wrap:wrap;margin-bottom:4px}
+.bigtools .fitbig,.bigactions .fitbig{padding:7px 14px;border:1px solid var(--border);background:var(--bg2);color:var(--text-soft);border-radius:8px;font-size:12.5px;cursor:pointer;font-family:inherit}
+.bigtools .fitbig.on{border-color:var(--gold);color:var(--gold);background:rgba(201,169,97,.08)}
+/* Foto minimizada */
+.minitem{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--border);border-radius:11px;padding:9px 12px;margin-bottom:9px}
+.miniprev{background:#fff;border:1px solid var(--border);border-radius:4px;overflow:hidden;position:relative;flex-shrink:0}
+.miniimgwrap{width:100%;height:100%;overflow:hidden;position:relative;background:#e8e5dd}
+.miniinfo{flex:1;min-width:0}
+.miniinfo .fn{margin-bottom:2px}
+.minimeta{font-size:11px;color:var(--muted)}
+.minibtn{padding:5px 12px;border:1px solid var(--border);background:var(--bg2);color:var(--gold);border-radius:7px;font-size:12px;cursor:pointer}
+.minibtn:hover{border-color:var(--gold)}
+/* Boton eliminar con confirmacion */
+.delbtn{width:30px;height:30px;border-radius:7px;border:1px solid var(--border);background:transparent;color:var(--text-muted);cursor:pointer;font-size:13px;flex-shrink:0;white-space:nowrap;padding:0 8px;width:auto;min-width:30px}
+.delbtn:hover{border-color:var(--red);color:var(--red)}
+.delbtn.confirm{border-color:var(--red);color:var(--red);background:rgba(224,122,111,.12);font-size:11px}
+.okhoja{padding:7px 13px;border:1px solid var(--green);background:rgba(91,185,140,.12);color:var(--green);border-radius:8px;font-size:12.5px;cursor:pointer;font-family:inherit}
+.okhoja:hover{background:rgba(91,185,140,.22)}
+.addmore{display:inline-block;margin-bottom:14px;padding:9px 16px;border:1.5px dashed #3a3a3a;border-radius:10px;background:transparent;color:var(--gold);font-size:13.5px;cursor:pointer;font-family:inherit}
+.addmore:hover{border-color:var(--gold);background:rgba(201,169,97,.05)}
+.fitbig{padding:7px 16px;border:1px solid var(--border);background:var(--bg2);color:var(--text-soft);border-radius:8px;font-size:13px;cursor:pointer;font-family:inherit}
+.fitbig.on{border-color:var(--gold);color:var(--gold)}
+.empty-slot{cursor:pointer}
+.empty-slot:hover{background:#e2ded2}
+.addhoja{width:100%;padding:11px;border:1.5px dashed #3a3a3a;border-radius:11px;background:transparent;color:var(--text-soft);font-size:13.5px;cursor:pointer;font-family:inherit}
+.addhoja:hover{border-color:var(--gold);color:var(--gold)}
+
+/* Tira de miniaturas (paso 2) + contador */
+.tirahead{display:flex;justify-content:space-between;align-items:center;margin:18px 0 10px;font-size:13px;color:var(--text-soft)}
+.tirahead b{color:var(--gold)}
+.tira{display:flex;gap:11px;overflow-x:auto;padding:4px 2px 12px}
+.tira::-webkit-scrollbar{height:6px}
+.tira::-webkit-scrollbar-thumb{background:var(--border);border-radius:6px}
+.tcell{flex-shrink:0;width:78px;cursor:pointer}
+.tcell .tp{width:78px;height:78px;border-radius:11px;border:2px solid var(--border);overflow:hidden;position:relative;background:var(--bg2);display:flex;align-items:center;justify-content:center}
+.tcell.lista .tp{border-color:var(--green)}
+.tcell.editando .tp{border-color:var(--gold);box-shadow:0 0 0 2px rgba(212,175,106,.25)}
+.tcell .tp img{width:100%;height:100%;object-fit:cover}
+.tcell .ck{position:absolute;top:5px;right:5px;width:20px;height:20px;border-radius:50%;background:var(--green);display:none;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:700;line-height:1}
+.tcell.lista .ck{display:flex}
+.tcell .tm{font-size:10.5px;color:var(--muted);text-align:center;margin-top:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tcell.editando .tm{color:var(--gold)}
+.tcell.add .tp{border-style:dashed;color:var(--gold)}
+.tcell.add .tp:hover{border-color:var(--gold);background:rgba(212,175,106,.05)}
+.tcell .pend{position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.6);color:var(--amber);font-size:9px;text-align:center;padding:2px 0}
+
+/* Paso 3 — lista agrupada C1 */
+.gsec{margin-bottom:24px}
+.gsec-h{display:flex;align-items:center;gap:11px;margin-bottom:13px}
+.gsec-h .badge{font-family:'Poppins',sans-serif;font-weight:600;font-size:14px;background:var(--gold);color:#1a1408;padding:5px 14px;border-radius:8px}
+.gsec-h .gc{color:var(--muted);font-size:12.5px}
+.gsec-h .rule{flex:1;height:1px;background:var(--border)}
+.ggrp-h{display:flex;align-items:center;gap:8px;margin:14px 0 9px}
+.ggrp-h .gl{font-family:'Poppins',sans-serif;font-weight:500;font-size:12.5px;display:inline-flex;align-items:center;gap:6px;color:var(--cream)}
+.ggrp-h .gl .mi{color:var(--gold)}
+.ggrp-h .qn{font-size:11.5px;color:var(--muted)}
+.ggrp-h .gr{flex:1;height:1px;background:var(--border);opacity:.5}
+.ggrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(86px,1fr));gap:9px}
+.gph{border-radius:9px;overflow:hidden;border:1px solid var(--border);background:var(--bg2);position:relative;aspect-ratio:1}
+.gph img{width:100%;height:100%;object-fit:cover}
+.gph .cb{position:absolute;bottom:4px;right:4px;background:rgba(20,24,31,.85);border:1px solid var(--gold);color:var(--gold);font-size:10px;font-weight:600;padding:1px 6px;border-radius:12px}
+.gph .mb{position:absolute;top:4px;left:4px;width:19px;height:19px;border-radius:50%;background:rgba(20,24,31,.85);border:1px solid var(--gold);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:10px;line-height:1}
+/* resumen liviano (>30) */
+.grow{display:flex;justify-content:space-between;font-size:13.5px;color:var(--text-soft);padding:4px 0}
+.grow b{color:var(--cream)}
+
+/* Barra precio + acciones */
+.bar{position:sticky;bottom:0;margin-top:26px;background:linear-gradient(180deg,transparent,var(--bg) 22%);padding-top:14px}
+.barin{display:flex;justify-content:space-between;align-items:center;gap:14px;background:linear-gradient(180deg,var(--card),var(--card-soft));border:1px solid var(--gold);border-radius:14px;padding:14px 18px;box-shadow:0 12px 34px rgba(0,0,0,.32)}
+.barin .tl{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.barin .tv{font-family:'Space Mono',monospace;font-weight:700;font-size:24px;color:var(--gold-light)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;font-family:'Poppins',sans-serif;font-weight:500;font-size:14.5px;padding:11px 22px;border-radius:11px;border:none;cursor:pointer;background:var(--gold);color:#1a1408;transition:.2s}
+.btn i{font-size:18px;line-height:1}
+/* alineación de íconos dentro de botones */
+.del,.rm,.qty button,.delbtn{display:inline-flex;align-items:center;justify-content:center}
+.okhoja,.addmore,.addhoja,.sacar710,.minibtn,.fitbig{display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.qty button i.ti,.del i.ti,.rm i.ti,.delbtn i.ti{font-size:15px}
+.drop .ic i.ti{font-size:32px;line-height:1}
+.btn:hover{background:var(--gold-light)}
+.btn.ghost{background:transparent;border:1px solid var(--border);color:var(--text-soft)}
+.btn.ghost:hover{border-color:var(--gold);color:var(--gold)}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.actions{display:flex;gap:10px;justify-content:space-between;margin-top:14px}
+
+/* Paso 3 resumen */
+.box{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px}
+.box h3{font-family:'Poppins',sans-serif;font-weight:500;font-size:16px;margin-bottom:12px}
+.rsum{display:flex;justify-content:space-between;font-size:14px;color:var(--text-soft);padding:5px 0}
+.rsum b{color:var(--cream)}
+.divr{border-top:1px solid var(--border);margin:12px 0}
+.field{margin-bottom:11px}
+.field label{display:block;font-size:12.5px;color:var(--muted);margin-bottom:5px}
+.field input,.field textarea{width:100%}
+.req{color:var(--gold);font-weight:600}
+.fhint{font-size:11.5px;color:var(--muted);margin-top:5px;line-height:1.4}
+.field input.err,.field textarea.err{border-color:var(--red)!important;background:rgba(224,122,111,.06)}
+.payinfo{display:flex;align-items:flex-start;gap:10px;background:rgba(212,175,106,.07);border:1px solid var(--border);border-radius:11px;padding:12px 14px;margin:16px 0 4px;font-size:13px;color:var(--text-soft);line-height:1.5}
+.payinfo .pi-ic{flex-shrink:0;line-height:0;margin-top:1px;display:flex}
+.hide{display:none!important}
+.code{font-family:'Poppins',sans-serif;font-weight:600;font-size:26px;color:var(--gold-light);letter-spacing:.04em}
+.wa{display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#06351c;font-weight:600;padding:12px 20px;border-radius:11px;text-decoration:none;font-family:'Poppins',sans-serif;font-size:15px;margin-top:6px}
+
+/* Modal nota */
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;padding:20px;z-index:50}
+.modal .mc{background:var(--card);border:1px solid var(--gold);border-radius:14px;padding:20px;max-width:420px;width:100%}
+.modal h4{font-family:'Poppins',sans-serif;font-weight:500;margin-bottom:10px}
+
+.toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);background:var(--card);border:1px solid var(--gold);color:var(--cream);padding:12px 20px;border-radius:11px;font-size:14px;z-index:60;opacity:0;transition:.3s;pointer-events:none}
+.toast.show{opacity:1}
+
+@media(max-width:560px){
+  .wrap{padding:18px 14px 90px}
+  .top .backsite span{display:none}
+  .item{flex-wrap:wrap}
+  .item .fn{width:100%;flex-basis:100%;order:-1}
+  select{flex:1}
+  /* stepper compacto */
+  .steps{gap:6px}
+  .steps .st{min-width:0;flex:1;flex-direction:column;text-align:center;gap:5px;padding:9px 6px;font-size:11px}
+  .steps .st .n{margin:0 auto}
+  .steps .st + .st::before{display:none}
+  /* editor: controles mas comodos al dedo */
+  .bighead{flex-wrap:wrap;gap:10px}
+  .bighead .bigtitle{width:100%;font-size:12px}
+  .bigactions{width:100%;flex-wrap:wrap;gap:8px;justify-content:space-between}
+  .bigactions select{flex:1;min-width:96px;font-size:15px;padding:10px}
+  .bigtools{flex-wrap:wrap;gap:8px;justify-content:center}
+  .bigtools .fitbig,.bigactions .fitbig{font-size:13.5px;padding:10px 14px}
+  .qty button{width:34px;height:34px}
+  .okhoja{padding:10px 16px}
+  /* tira de miniaturas un toque mas chica */
+  .tcell,.tcell .tp{width:70px}
+  .tcell .tp{height:70px}
+  /* grilla paso 3 */
+  .ggrid{grid-template-columns:repeat(auto-fill,minmax(74px,1fr));gap:8px}
+  /* barra de accion fija abajo (paso 2 ya la tiene sticky; paso 3 actions) */
+  #p3 .actions{position:sticky;bottom:0;background:linear-gradient(180deg,transparent,var(--bg) 26%);padding:12px 0 4px;margin:14px -14px 0;padding-left:14px;padding-right:14px}
+  #p3 .actions .btn{flex:1}
+  #p3 .actions .btn.ghost{flex:0 0 64px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="top">
+    <div class="brand">
+      <div class="logo"><i class="ti ti-camera"></i></div>
+      <div>
+        <h1>Revelado de fotos</h1>
+        <div class="sub">Centro Color · elegí medida, subí tus fotos y coordinamos por WhatsApp</div>
+      </div>
+    </div>
+    <a class="backsite" href="https://centrocolor.com.ar"><i class="ti ti-arrow-left"></i><span>Volver al sitio</span></a>
+  </div>
+
+  <div class="steps">
+    <div class="st active" id="st1"><span class="n">1</span> Subí tus fotos</div>
+    <div class="st" id="st2"><span class="n">2</span> Medidas y copias</div>
+    <div class="st" id="st3"><span class="n">3</span> Confirmar</div>
+  </div>
+
+  <!-- PASO 1 -->
+  <section id="p1">
+    <h2 class="sec">Subí tus fotos</h2>
+    <p class="lead">Revisá las miniaturas antes de seguir. Si subiste una equivocada, sacala con la X.</p>
+    <div class="drop" id="drop">
+      <div class="ic"><i class="ti ti-photo-up"></i></div>
+      <b>Tocá para agregar fotos</b>
+      <span>Desde tu galería o arrastralas acá · JPG o PNG</span>
+    </div>
+    <input type="file" id="file" accept="image/*" multiple class="hide">
+    <div id="g1wrap" class="hide">
+      <div class="gridhead"><span><b id="cnt">0 fotos</b> subidas</span><span>tocá la X para quitar</span></div>
+      <div class="pgrid" id="pgrid"></div>
+    </div>
+    <div class="actions">
+      <span></span>
+      <button class="btn" id="go2" disabled>Continuar <i class="ti ti-arrow-right"></i></button>
+    </div>
+  </section>
+
+  <!-- PASO 2 -->
+  <section id="p2" class="hide">
+    <h2 class="sec">Medidas y copias</h2>
+    <p class="lead">Elegí la medida de cada foto. Tocá la imagen para ampliarla y centrar el recorte. Las que pongas en 7x10 pasan abajo, a las hojas.</p>
+    <button class="addmore" id="addmore"><i class="ti ti-plus"></i> Subir más fotos</button>
+    <div id="itemlist"></div>
+
+    <div class="zona hide" id="zona">
+      <div class="zh"><span class="dot"></span><b>Hojas 7x10</b></div>
+      <div class="zhd">Cada hoja se divide en 2. Arrastrá 2 fotos por hoja (pueden repetirse). Elegí orientación según cómo se corta.</div>
+      <div class="pool" id="pool"></div>
+      <div id="hojas"></div>
+      <button class="addhoja" id="addhoja"><i class="ti ti-plus"></i> Agregar otra hoja</button>
+    </div>
+
+    <div class="bar">
+      <div class="barin">
+        <div><div class="tl">Total estimado</div><div class="tv" id="total2">$0</div></div>
+        <div style="display:flex;gap:10px">
+          <button class="btn ghost" id="back1"><i class="ti ti-arrow-left"></i></button>
+          <button class="btn" id="go3">Continuar <i class="ti ti-arrow-right"></i></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PASO 3 -->
+  <section id="p3" class="hide">
+    <h2 class="sec">Confirmar pedido</h2>
+    <p class="lead">Revisá el resumen y dejanos tus datos. Después coordinás los detalles por WhatsApp.</p>
+    <div class="box" id="confbox">
+      <h3>Resumen</h3>
+      <div id="resumen"></div>
+      <div class="divr"></div>
+      <div class="field">
+        <label>Nombre y apellido <span class="req">*</span></label>
+        <input type="text" id="cn" placeholder="Nombre y apellido">
+        <div class="fhint">El pedido se registra a este nombre. Con él lo retirás en el local.</div>
+      </div>
+      <div class="field">
+        <label>WhatsApp <span class="req">*</span></label>
+        <input type="tel" id="cw" placeholder="Ej. 343 555 1234" inputmode="numeric">
+        <div class="fhint">Número argentino con código de área (10 dígitos).</div>
+      </div>
+      <div class="field"><label>Nota general (opcional)</label><textarea id="cnota" rows="2" placeholder="Algo que quieras aclarar de todo el pedido"></textarea></div>
+      <div class="payinfo">
+        <span class="pi-ic"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M14.5 9.5a2.5 2.5 0 0 0-2.5-1.5c-1.4 0-2.5.8-2.5 2s1.1 1.6 2.5 2 2.5.8 2.5 2-1.1 2-2.5 2a2.5 2.5 0 0 1-2.5-1.5M12 6.5v11"/></svg></span>
+        <span>Podés abonar por adelantado o al retirar. Coordinamos la forma de pago por WhatsApp una vez confirmado el pedido.</span>
+      </div>
+      <div class="actions">
+        <button class="btn ghost" id="back2"><i class="ti ti-arrow-left"></i></button>
+        <button class="btn" id="confirm" disabled>Confirmar pedido</button>
+      </div>
+    </div>
+
+    <div class="box hide" id="okbox" style="text-align:center">
+      <h3>¡Pedido recibido!</h3>
+      <p style="color:var(--text-soft);font-size:14px;margin-bottom:14px">Tu número de carga es</p>
+      <div class="code" id="okcode">—</div>
+      <p style="color:var(--text-soft);font-size:14px;margin:16px 0 4px">Escribinos por WhatsApp con este número para terminar de coordinar el pedido y la forma de pago:</p>
+      <a class="wa" id="walink" href="#" target="_blank">Continuar por WhatsApp</a>
+    </div>
+  </section>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const MEDIDAS = ["Polaroid","7x10","10x15","13x18","15x21","20x25","20x30","25x38"];
+// Proporcion de cada medida como [lado_corto, lado_largo] en mm reales del papel.
+// Datos reales del programa de impresion (Paper Width : Paper Length).
+const RATIO = {
+  "Polaroid":[102,152], // 152x102 papel, borde grande abajo
+  "7x10":[102,152],     // media hoja 10x15 (cada 7x10 sale de partir la 10x15)
+  "10x15":[102,152],    // W152 L102
+  "13x18":[127,180],    // W127 L180
+  "15x21":[152,210],    // W152 L210
+  "20x25":[203,254],    // W203 L254
+  "20x30":[203,305],    // W203 L305
+  "25x38":[254,378]     // W254 L378
+};
+const BORDE_BLANCO_MM = 4;   // marco decorativo parejo
+const POLAROID_BORDES = {top:6,bottom:6,left:6,right:6,big_bottom:25}; // borde grande abajo
+// Devuelve {w,h} en px para una caja de previa, lado largo horizontal, cabiendo en maxW x maxH
+// Decide la orientacion final del papel para una foto.
+// 'auto' = coincide con la foto (vertical->parado, horizontal->acostado)
+// f.rotar invierte la decision automatica.
+function papelVertical(f){
+  const img=f._img;
+  let fotoVertical = img && img.naturalHeight>img.naturalWidth;
+  if(fotoVertical===undefined) fotoVertical=false;
+  return f.rotar ? !fotoVertical : fotoVertical;
+}
+// Devuelve {w,h} de la caja de previa para una medida, ya orientada segun la foto.
+function cajaPreview(medida,maxW,maxH,f){
+  const r=RATIO[medida]||[2,3];
+  const corto=Math.min(r[0],r[1]), largo=Math.max(r[0],r[1]);
+  const vert = f ? papelVertical(f) : false;
+  // vert -> papel parado (ancho=corto, alto=largo) ; si no, acostado
+  let propW = vert ? corto : largo;
+  let propH = vert ? largo : corto;
+  let w=maxW, h=w*propH/propW;
+  if(h>maxH){h=maxH;w=h*propW/propH;}
+  return {w:Math.round(w),h:Math.round(h)};
+}
+// Precios de ejemplo (en produccion se piden a /api/precios)
+let PRECIOS = {
+  "Polaroid":{t1:900,t2:820,t3:750,iman:300},
+  "7x10":{t1:1100,t2:1000,t3:900,iman:400},
+  "10x15":{t1:700,t2:640,t3:580,iman:300},
+  "13x18":{t1:1300,t2:1200,t3:1100,iman:400},
+  "15x21":{t1:1800,t2:1650,t3:1500,iman:500},
+  "20x25":{t1:2600,t2:2400,t3:2200,iman:600},
+  "20x30":{t1:3000,t2:2750,t3:2500,iman:600},
+  "25x38":{t1:4200,t2:3900,t3:3600,iman:700}
+};
+let TRAMOS = {t1:9,t2:49};
+const WA = "5493434288796";
+
+let fotos = [];   // {id,name,url,medida,iman,copias,encuadre,nota}
+let hojasArr = []; // {id,orient,slots:[fotoId|null,fotoId|null]}
+let dragId = null;
+let editHoja = null;
+let editFoto = null;
+let uid = 0;
+
+const $ = s => document.querySelector(s);
+const money = n => "$"+Math.round(n).toLocaleString("es-AR");
+function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2200);}
+
+// ---------- PASO 1 ----------
+const drop=$("#drop"), file=$("#file");
+drop.onclick=()=>file.click();
+drop.ondragover=e=>{e.preventDefault();drop.classList.add("over")};
+drop.ondragleave=()=>drop.classList.remove("over");
+drop.ondrop=e=>{e.preventDefault();drop.classList.remove("over");addFiles(e.dataTransfer.files)};
+file.onchange=e=>addFiles(e.target.files);
+
+function addFiles(list){
+  [...list].forEach(file=>{
+    // Aceptar imagenes. HEIC del iPhone a veces viene con type vacio: dejar pasar por extension.
+    const esImg = file.type.startsWith("image/") || /\.(jpe?g|png|webp|heic|heif|gif)$/i.test(file.name);
+    if(!esImg)return;
+    const foto={id:++uid,name:file.name,url:"",medida:"10x15",iman:false,copias:1,encuadre:"llenar",borde:false,rotar:false,rotada:false,px:0.5,py:0.5,nota:"",_img:null,_cargando:true,_file:file};
+    fotos.push(foto);
+    const reader=new FileReader();
+    reader.onload=e=>{
+      foto.url=e.target.result;
+      const im=new Image();
+      im.onload=()=>{foto._img=im;foto._cargando=false;refrescarVistas();};
+      im.onerror=()=>{foto._cargando=false;foto._error=true;refrescarVistas();};
+      im.src=foto.url;
+      refrescarVistas();
+    };
+    reader.onerror=()=>{foto._cargando=false;foto._error=true;refrescarVistas();};
+    reader.readAsDataURL(file);
+  });
+  refrescarVistas();
+}
+function refrescarVistas(){
+  renderGrid();
+  if(!$("#p2").classList.contains("hide"))renderItems();
+}
+function renderGrid(){
+  $("#g1wrap").classList.toggle("hide",fotos.length===0);
+  $("#cnt").textContent=fotos.length+(fotos.length===1?" foto":" fotos");
+  $("#go2").disabled=fotos.length===0;
+  $("#pgrid").innerHTML=fotos.map(f=>{
+    let inner;
+    if(f._cargando) inner=`<div class="thumbload"><span class="spin"></span></div>`;
+    else if(f._error) inner=`<div class="thumberr"><i class="ti ti-photo-x"></i>no se pudo<br>mostrar</div>`;
+    else inner=`<img src="${f.url}" alt="${f.name}">`;
+    return `<div class="thumb">
+      ${inner}
+      <button class="del" onclick="delFoto(${f.id})"><i class="ti ti-x"></i></button>
+      <div class="name">${f.name}</div>
+    </div>`;
+  }).join("");
+}
+window.delFoto=id=>{
+  fotos=fotos.filter(f=>f.id!==id);
+  hojasArr.forEach(h=>h.slots=h.slots.map(s=>s===id?null:s));
+  if(editFoto===id)editFoto=null;
+  renderGrid();
+  if(!$("#p2").classList.contains("hide")){renderItems();}
+};
+
+// ---------- PASO 2 ----------
+function renderItems(){
+  const normales=fotos.filter(f=>f.medida!=="7x10");
+  // si la foto en edicion ya no existe o no es normal, no abrir ninguna (todas minimizadas)
+  if(editFoto!=null && !normales.find(f=>f.id===editFoto)) editFoto=null;
+  const fe=normales.find(f=>f.id===editFoto);
+  // 1) editor grande (si hay una en edicion) 2) tira de miniaturas con tilde
+  const listas=normales.filter(f=>f.id!==editFoto).length;
+  let html = fe ? fotoGrande(fe) : "";
+  if(normales.length){
+    html+=`<div class="tirahead"><span><b>${listas}</b> de ${normales.length} ${normales.length===1?'lista':'listas'}</span><span>tocá una foto para editarla</span></div>`;
+    html+=`<div class="tira">`;
+    html+=normales.map(f=>{
+      const cls = f.id===editFoto ? "editando" : "lista";
+      return `<div class="tcell ${cls}" onclick="editarFoto(${f.id})">
+        <div class="tp"><img src="${f.url}"><span class="ck"><i class="ti ti-check"></i></span></div>
+        <div class="tm">${f.medida}${f.copias>1?' ·×'+f.copias:''}${f.iman?' · imán':''}</div>
+      </div>`;
+    }).join("");
+    html+=`<div class="tcell add" onclick="document.getElementById('file').click()"><div class="tp" style="height:78px"><i class="ti ti-plus"></i></div><div class="tm">agregar</div></div>`;
+    html+=`</div>`;
+  }
+  $("#itemlist").innerHTML=html;
+  // conectar arrastre de la foto en edicion
+  if(fe)placeAndDrag("bigedit-"+fe.id,fe);
+  renderZona();
+  calcTotal();
+}
+// Calcula el padding (marco blanco) del frame de previa segun la medida.
+// Polaroid: bordes reales 6/6/6/25 (top/right/bottom/left -> top,right,bottom,left).
+// Borde blanco 4mm: parejo. Sin nada: 0.
+// w,h = tamaño del frame en px. Devuelve string css "top right bottom left".
+function framePadding(f,w,h){
+  if(f.medida==="Polaroid"){
+    // proporciones del papel: 152x102 mm. Bordes en % del marco (escala responsive).
+    const r=RATIO["Polaroid"]; const corto=Math.min(...r),largo=Math.max(...r);
+    const vert=papelVertical(f);
+    const mmW = vert?corto:largo, mmH = vert?largo:corto;
+    // bordes Polaroid en mm: top6 right6 bottom25 left6 (pie grande abajo)
+    const t=(6/mmH*100).toFixed(2), rg=(6/mmW*100).toFixed(2), b=(25/mmH*100).toFixed(2), l=(6/mmW*100).toFixed(2);
+    return `${t}% ${rg}% ${b}% ${l}%`;
+  }
+  if(f.borde){
+    return "3.5%";
+  }
+  return "0px";
+}
+// Foto en edicion: grande, con previa arrastrable y todos los controles
+function fotoGrande(f){
+  const c=cajaPreview(f.medida,600,450,f);
+  const pad=framePadding(f,c.w,c.h);
+  return `<div class="bigitem">
+    <div class="bighead">
+      <span class="bigtitle">${f.name} · editando</span>
+      <div class="bigactions">
+        <select onchange="setMedida(${f.id},this.value)">
+          ${MEDIDAS.map(m=>`<option ${m===f.medida?"selected":""}>${m}</option>`).join("")}
+        </select>
+        <div class="qty">
+          <button onclick="setCopias(${f.id},-1)"><i class="ti ti-minus"></i></button><b>${f.copias}</b><button onclick="setCopias(${f.id},1)"><i class="ti ti-plus"></i></button>
+        </div>
+        <label class="chk"><input type="checkbox" ${f.iman?"checked":""} onchange="setIman(${f.id},this.checked)"> imán</label>
+        <button class="okhoja" onclick="cerrarFoto(${f.id})"><i class="ti ti-check"></i> Listo</button>
+        <button class="delbtn" id="delf-${f.id}" onclick="askDelFoto(${f.id})" title="eliminar"><i class="ti ti-trash"></i></button>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:center;padding:6px 0 12px">
+      <div id="bigframe-${f.id}" style="width:${c.w}px;max-width:100%;aspect-ratio:${c.w}/${c.h};background:#fff;border:1px solid var(--border);border-radius:5px;padding:${pad};box-sizing:border-box">
+        <div class="editbox" id="bigedit-${f.id}" style="width:100%;height:100%;overflow:hidden;position:relative;background:#e8e5dd">
+          <img src="${f.url}" draggable="false" style="position:absolute;user-select:none;pointer-events:none">
+        </div>
+      </div>
+    </div>
+    <div class="bigtools">
+      <button class="fitbig ${f.encuadre==='llenar'?'on':''}" onclick="setFitN(${f.id},'llenar')">Llenar</button>
+      <button class="fitbig ${f.encuadre==='completa'?'on':''}" onclick="setFitN(${f.id},'completa')">Completa</button>
+      <span style="width:1px;height:22px;background:var(--border)"></span>
+      <button class="fitbig ${f.borde?'on':''}" onclick="toggleBorde(${f.id})"><i class="ti ti-border-outer"></i> borde blanco</button>
+      <button class="fitbig" onclick="rotarFoto(${f.id})" title="rotar el papel"><i class="ti ti-rotate-clockwise"></i> rotar</button>
+      <button class="fitbig ${f.nota?'on':''}" onclick="openNota(${f.id})"><i class="ti ti-pencil"></i> nota</button>
+    </div>
+    <p class="hojahint">${f.encuadre==='llenar'?'Arrastrá la foto para elegir qué parte sale del corte':'La foto entra entera, con bordes blancos donde haga falta'}</p>
+  </div>`;
+}
+// Foto minimizada: fila chica con editar + eliminar
+function fotoMini(f){
+  const c=cajaPreview(f.medida,56,42,f);
+  const pad=framePadding(f,c.w,c.h);
+  return `<div class="minitem">
+    <div class="miniprev" style="width:${c.w}px;height:${c.h}px;padding:${pad};box-sizing:border-box"><div class="miniimgwrap"><img src="${f.url}" id="rowimg-${f.id}" style="position:absolute" draggable="false"></div></div>
+    <div class="miniinfo">
+      <div class="fn">${f.name}</div>
+      <div class="minimeta">${f.medida} · ${f.copias} ${f.copias>1?'copias':'copia'}${f.iman?' · imán':''}${f.borde?' · borde':''}</div>
+    </div>
+    <button class="minibtn" onclick="editarFoto(${f.id})">editar</button>
+    <button class="delbtn" id="delf-${f.id}" onclick="askDelFoto(${f.id})" title="eliminar"><i class="ti ti-trash"></i></button>
+  </div>`;
+}
+window.editarFoto=id=>{editFoto=id;renderItems();};
+window.cerrarFoto=id=>{
+  if(editFoto===id)editFoto=null; // solo minimiza, no abre otra
+  renderItems();
+};
+window.rotarFoto=id=>{const f=fotos.find(x=>x.id===id);f.rotar=!f.rotar;renderItems();};
+window.toggleBorde=id=>{const f=fotos.find(x=>x.id===id);f.borde=!f.borde;renderItems();};
+// Eliminar foto con confirmacion (2 clics)
+window.askDelFoto=id=>{
+  const btn=document.getElementById("delf-"+id);
+  if(!btn)return;
+  if(btn.dataset.c){delFoto(id);return;}
+  btn.dataset.c="1";btn.textContent="¿eliminar?";btn.classList.add("confirm");
+  setTimeout(()=>{if(btn&&btn.dataset.c){btn.dataset.c="";btn.innerHTML='<i class="ti ti-trash"></i>';btn.classList.remove("confirm");}},2500);
+};
+// Seguir subiendo desde el paso 2
+$("#addmore").onclick=()=>file.click();
+// Posiciona una imagen en una caja FIJA (sin arrastre) - miniaturas
+function placeStatic(imgId,f){
+  const img=document.getElementById(imgId);
+  if(!img)return;
+  const box=img.parentElement;
+  function place(){
+    const cw=box.clientWidth, ch=box.clientHeight;
+    if(!cw||!ch){requestAnimationFrame(place);return;} // esperar layout
+    const nat=(img.naturalWidth/img.naturalHeight)||1.5;
+    if(f.encuadre==="completa"){
+      let w=cw,h=cw/nat; if(h>ch){h=ch;w=ch*nat;}
+      img.style.width=w+"px";img.style.height=h+"px";
+      img.style.left=((cw-w)/2)+"px";img.style.top=((ch-h)/2)+"px";
+    } else {
+      let w,h; if(cw/ch>nat){w=cw;h=cw/nat;}else{h=ch;w=ch*nat;}
+      img.style.width=w+"px";img.style.height=h+"px";
+      img.style.left=((cw-w)*f.px)+"px";img.style.top=((ch-h)*f.py)+"px";
+    }
+  }
+  if(img.complete&&img.naturalWidth)place(); else img.onload=place;
+}
+// Posiciona la imagen segun encuadre y conecta el arrastre (foto grande).
+function placeAndDrag(boxId,f){
+  const box=document.getElementById(boxId);
+  if(!box)return;
+  const img=box.querySelector("img");
+  function place(){
+    const cw=box.clientWidth, ch=box.clientHeight;
+    if(!cw||!ch){requestAnimationFrame(place);return;} // esperar layout
+    let nat=(img.naturalWidth/img.naturalHeight)||1.5;
+    if(f.rotada)nat=1/nat; // la foto rotada ocupa el recuadro con el aspecto invertido
+    let w,h,left,top;
+    if(f.encuadre==="completa"){
+      w=cw;h=cw/nat; if(h>ch){h=ch;w=ch*nat;}
+      left=(cw-w)/2; top=(ch-h)/2;
+      box.style.cursor="default";box.classList.remove("draggable");
+    } else {
+      if(cw/ch>nat){w=cw;h=cw/nat;}else{h=ch;w=ch*nat;}
+      left=(cw-w)*f.px; top=(ch-h)*f.py;
+      box.style.cursor="grab";box.classList.add("draggable");
+    }
+    if(f.rotada){
+      // el elemento img queda sin rotar con lados intercambiados, centrado
+      // en la caja destino, y se gira 90 grados con CSS (igual que sharp en el server)
+      img.style.width=h+"px";img.style.height=w+"px";
+      img.style.left=(left+(w-h)/2)+"px";img.style.top=(top+(h-w)/2)+"px";
+      img.style.transform="rotate(90deg)";
+    } else {
+      img.style.width=w+"px";img.style.height=h+"px";
+      img.style.left=left+"px";img.style.top=top+"px";
+      img.style.transform="";
+    }
+    box._geom={cw,ch,w,h};
+  }
+  if(img.complete&&img.naturalWidth)place(); else img.onload=place;
+  let drag=false,sx,sy,spx,spy;
+  box.onpointerdown=e=>{
+    if(f.encuadre!=="llenar")return;
+    drag=true;sx=e.clientX;sy=e.clientY;spx=f.px;spy=f.py;
+    box.style.cursor="grabbing";box.setPointerCapture(e.pointerId);
+  };
+  box.onpointermove=e=>{
+    if(!drag)return;
+    const g=box._geom;if(!g)return;
+    const mx=g.w-g.cw,my=g.h-g.ch;
+    if(mx>0)f.px=Math.min(1,Math.max(0,spx-(e.clientX-sx)/mx));
+    if(my>0)f.py=Math.min(1,Math.max(0,spy-(e.clientY-sy)/my));
+    place();
+  };
+  box.onpointerup=()=>{drag=false;box.style.cursor="grab"};
+}
+window.setFitN=(id,v)=>{fotos.find(x=>x.id===id).encuadre=v;renderItems()};
+window.setMedida=(id,v)=>{const f=fotos.find(x=>x.id===id);f.medida=v;f.px=0.5;f.py=0.5;if(v==="7x10"){ensureSlot(id);editFoto=null;const h=hojasArr.find(hh=>hh.slots.includes(id));if(h)editHoja=h.id;}else hojasArr.forEach(h=>h.slots=h.slots.map(s=>s===id?null:s));renderItems()};
+window.setIman=(id,v)=>{fotos.find(x=>x.id===id).iman=v;renderItems()};
+window.setCopias=(id,d)=>{const f=fotos.find(x=>x.id===id);f.copias=Math.max(1,f.copias+d);renderItems()};
+
+// Zona 7x10
+function get710(){return fotos.filter(f=>f.medida==="7x10")}
+function ensureSlot(id){
+  const placed=hojasArr.some(h=>h.slots.includes(id));
+  if(placed)return;
+  let h=hojasArr.find(h=>h.slots.includes(null));
+  if(!h){h={id:++uid,orient:"apaisada",slots:[null,null]};hojasArr.push(h)}
+  const i=h.slots.indexOf(null);h.slots[i]=id;
+}
+function renderZona(){
+  const arr=get710();
+  $("#zona").classList.toggle("hide",arr.length===0&&hojasArr.length===0);
+  if(arr.length===0){hojasArr=[];return}
+  // mantener la hoja en edicion si es valida; si no, no abrir ninguna (todas minimizadas)
+  if(editHoja!=null && !hojasArr.find(h=>h.id===editHoja)) editHoja=null;
+  const usadas=new Set(hojasArr.flatMap(h=>h.slots).filter(Boolean));
+  $("#pool").innerHTML=arr.map(f=>`
+    <div class="chip ${usadas.has(f.id)?"used":""}" draggable="true" ondragstart="dragStart(${f.id})">
+      <span class="ci"></span>${f.name}${usadas.has(f.id)?" ✓":""}
+    </div>`).join("");
+
+  $("#hojas").innerHTML=hojasArr.map((h,hi)=>{
+    return h.id===editHoja ? hojaGrande(h,hi) : hojaMini(h,hi);
+  }).join("");
+
+  // conectar arrastre de la hoja grande
+  const he=hojasArr.find(h=>h.id===editHoja);
+  if(he){
+    [0,1].forEach(si=>{
+      const fid=he.slots[si];
+      if(fid){const f=fotos.find(x=>x.id===fid);if(f)placeAndDrag(`hs-${he.id}-${si}`,f);}
+    });
+  }
+}
+function hojaGrande(h,hi){
+  const ap=h.orient==="apaisada";
+  const W=ap?432:288, H=ap?288:432;
+  return `<div class="hoja editando">
+    <div class="hh">
+      <span class="ht">Hoja ${hi+1} · editando</span>
+      <div style="display:flex;gap:6px;align-items:center">
+        <div class="orient">
+          <button class="${ap?"on":""}" onclick="setOrient(${h.id},'apaisada')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="12" rx="1.5"/></svg>Horizontal</button>
+          <button class="${!ap?"on":""}" onclick="setOrient(${h.id},'vertical')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="3" width="12" height="18" rx="1.5"/></svg>Vertical</button>
+        </div>
+        <button class="okhoja" onclick="cerrarHoja(${h.id})"><i class="ti ti-check"></i> Listo</button>
+        <button class="delbtn" id="delh-${h.id}" onclick="askDelHoja(${h.id})" title="eliminar hoja"><i class="ti ti-trash"></i></button>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:center;padding:6px 0 4px">
+      <div class="hojaprev" style="width:${W}px;height:${H}px;display:flex;flex-direction:${ap?'column':'row'}">
+        ${[0,1].map(si=>slotGrande(h,si,ap)).join("")}
+      </div>
+    </div>
+    <div class="hojahint">Así sale la hoja 10x15 ${ap?'horizontal':'vertical'} · en "Llenar" arrastrá la foto para centrar el corte · el botón de la flecha rota la foto</div>
+  </div>`;
+}
+function slotGrande(h,si,ap){
+  const fid=h.slots[si];
+  const f=fid?fotos.find(x=>x.id===fid):null;
+  if(!f)return `<div class="hslot big empty-slot" onclick="subirASlot(${h.id},${si})" ondragover="event.preventDefault()" ondrop="dropSlot(${h.id},${si})"><span class="ph"><i class="ti ti-plus"></i></span><span class="pht">tocá o soltá una foto acá</span></div>`;
+  return `<div class="hslot big filled" ondragover="event.preventDefault()" ondrop="dropSlot(${h.id},${si})">
+    <div class="editbox" id="hs-${h.id}-${si}" style="width:100%;height:100%;overflow:hidden;position:relative;background:#e8e5dd">
+      <img src="${f.url}" draggable="false" style="position:absolute;user-select:none;pointer-events:none">
+    </div>
+    <button class="rm" onclick="clearSlot(${h.id},${si})" title="quitar de la hoja"><i class="ti ti-x"></i></button>
+    <div class="fit">
+      <button class="${f.encuadre==='llenar'?'on':''}" onclick="setFit(${fid},'llenar')">Llenar</button>
+      <button class="${f.encuadre==='completa'?'on':''}" onclick="setFit(${fid},'completa')">Completa</button>
+      <button class="${f.rotada?'on':''}" onclick="rotSlot(${fid})" title="rotar la foto"><i class="ti ti-rotate-clockwise"></i></button>
+    </div>
+    <button class="sacar710" onclick="sacarDe710(${fid})" title="cambiar a otra medida"><i class="ti ti-arrow-up-right"></i> sacar de 7x10</button>
+  </div>`;
+}
+// Saca una foto del 7x10 y la pasa a 10x15 normal (fila independiente)
+window.sacarDe710=fid=>{
+  const f=fotos.find(x=>x.id===fid);if(!f)return;
+  hojasArr.forEach(h=>h.slots=h.slots.map(s=>s===fid?null:s));
+  // eliminar hojas que quedaron totalmente vacias
+  hojasArr=hojasArr.filter(h=>h.slots.some(Boolean));
+  f.medida="10x15";f.px=0.5;f.py=0.5;f.rotada=false;
+  if(editHoja!=null && !hojasArr.find(h=>h.id===editHoja))editHoja=null;
+  renderItems();
+};
+function hojaMini(h,hi){
+  const ap=h.orient==="apaisada";
+  const W=ap?92:62, H=ap?62:92;
+  const lleno=h.slots.filter(Boolean).length;
+  return `<div class="hojamini">
+    <div class="hmprev" style="width:${W}px;height:${H}px;display:flex;flex-direction:${ap?'column':'row'}">
+      ${[0,1].map(si=>{
+        const fid=h.slots[si];const f=fid?fotos.find(x=>x.id===fid):null;
+        const fit=f&&f.encuadre==="completa"?"contain":"cover";
+        if(!f)return `<div class="ms empty"></div>`;
+        if(f.rotada){
+          const sw=ap?W:Math.floor(W/2), sh=ap?Math.floor(H/2):H;
+          return `<div class="ms" style="position:relative;overflow:hidden"><img src="${f.url}" style="position:absolute;width:${sh}px;height:${sw}px;left:${(sw-sh)/2}px;top:${(sh-sw)/2}px;object-fit:${fit};transform:rotate(90deg)"></div>`;
+        }
+        return `<div class="ms"><img src="${f.url}" style="object-fit:${fit}"></div>`;
+      }).join("")}
+    </div>
+    <div class="hmlabel">Hoja ${hi+1}<br><span>${lleno}/2 · ${ap?'horizontal':'vertical'}</span></div>
+    <button class="hmedit" onclick="event.stopPropagation();editarHoja(${h.id})">editar</button>
+    <button class="delbtn" id="delh-${h.id}" onclick="event.stopPropagation();askDelHoja(${h.id})" title="eliminar hoja"><i class="ti ti-trash"></i></button>
+  </div>`;
+}
+window.editarHoja=id=>{editHoja=id;renderZona()};
+window.cerrarHoja=id=>{
+  if(editHoja===id)editHoja=null; // solo minimiza, no abre otra
+  renderZona();
+};
+// Eliminar hoja con confirmacion. Las fotos 7x10 que tenia vuelven al pool.
+window.askDelHoja=id=>{
+  const btn=document.getElementById("delh-"+id);
+  if(!btn)return;
+  if(btn.dataset.c){delHoja(id);return;}
+  btn.dataset.c="1";btn.textContent="¿eliminar?";btn.classList.add("confirm");
+  setTimeout(()=>{if(btn&&btn.dataset.c){btn.dataset.c="";btn.innerHTML='<i class="ti ti-trash"></i>';btn.classList.remove("confirm");}},2500);
+};
+window.delHoja=id=>{
+  hojasArr=hojasArr.filter(h=>h.id!==id);
+  if(editHoja===id)editHoja=null;
+  renderZona();calcTotal();
+};
+window.dragStart=id=>{dragId=id};
+window.dropSlot=(hid,si)=>{
+  const h=hojasArr.find(x=>x.id===hid);
+  if(dragId==null)return;
+  hojasArr.forEach(hh=>hh.slots=hh.slots.map(s=>s===dragId?null:s));
+  h.slots[si]=dragId;dragId=null;editHoja=hid;renderZona();calcTotal();
+};
+window.clearSlot=(hid,si)=>{const h=hojasArr.find(x=>x.id===hid);h.slots[si]=null;renderZona();calcTotal()};
+// Subir una foto nueva directo a una mitad de hoja 7x10
+let slotTarget=null;
+window.subirASlot=(hid,si)=>{
+  slotTarget={hid,si};
+  let inp=document.getElementById("slotfile");
+  if(!inp){inp=document.createElement("input");inp.type="file";inp.accept="image/*";inp.id="slotfile";inp.style.display="none";
+    inp.onchange=e=>{
+      const file=e.target.files[0];if(!file||!file.type.startsWith("image/")){return}
+      const nf={id:++uid,name:file.name,url:"",medida:"7x10",iman:false,copias:1,encuadre:"llenar",borde:false,rotar:false,rotada:false,px:0.5,py:0.5,nota:"",_img:null,_cargando:true,_file:file};
+      fotos.push(nf);
+      const h=hojasArr.find(x=>x.id===slotTarget.hid);
+      if(h){h.slots[slotTarget.si]=nf.id;editHoja=h.id;}
+      const reader=new FileReader();
+      reader.onload=ev=>{
+        nf.url=ev.target.result;
+        const im=new Image();
+        im.onload=()=>{nf._img=im;nf._cargando=false;renderGrid();renderItems();};
+        im.onerror=()=>{nf._cargando=false;nf._error=true;renderGrid();renderItems();};
+        im.src=nf.url;
+        renderGrid();renderItems();
+      };
+      reader.readAsDataURL(file);
+      e.target.value="";
+    };
+    document.body.appendChild(inp);
+  }
+  inp.click();
+};
+window.setOrient=(hid,o)=>{hojasArr.find(x=>x.id===hid).orient=o;renderZona()};
+window.setFit=(fid,v)=>{fotos.find(x=>x.id===fid).encuadre=v;renderZona()};
+window.rotSlot=fid=>{const f=fotos.find(x=>x.id===fid);f.rotada=!f.rotada;renderZona();};
+$("#addhoja").onclick=()=>{const nh={id:++uid,orient:"apaisada",slots:[null,null]};hojasArr.push(nh);editHoja=nh.id;renderZona()};
+
+// Nota modal
+let notaId=null;
+window.openNota=id=>{
+  notaId=id;const f=fotos.find(x=>x.id===id);
+  const m=document.createElement("div");m.className="modal";m.id="notaModal";
+  m.innerHTML=`<div class="mc"><h4>Nota para ${f.name}</h4>
+    <textarea id="ntxt" rows="3" style="width:100%" placeholder="Ej. recortar un poco abajo">${f.nota||""}</textarea>
+    <div class="actions"><button class="btn ghost" onclick="closeNota()">Cancelar</button><button class="btn" onclick="saveNota()">Guardar</button></div></div>`;
+  document.body.appendChild(m);
+};
+window.closeNota=()=>{document.getElementById("notaModal")?.remove()};
+window.saveNota=()=>{fotos.find(x=>x.id===notaId).nota=$("#ntxt").value;closeNota();renderItems();toast("Nota guardada")};
+
+// Precio
+function tramoPrecio(p,cant){if(cant<=TRAMOS.t1)return p.t1;if(cant<=TRAMOS.t2)return p.t2;return p.t3}
+function calcTotal(){
+  const cant={};
+  fotos.filter(f=>f.medida!=="7x10").forEach(f=>cant[f.medida]=(cant[f.medida]||0)+f.copias);
+  const nHojas=hojasArr.filter(h=>h.slots.some(Boolean)).length;
+  if(nHojas)cant["7x10"]=(cant["7x10"]||0)+nHojas;
+  let total=0;
+  fotos.filter(f=>f.medida!=="7x10").forEach(f=>{
+    const p=PRECIOS[f.medida];if(!p)return;
+    total+=tramoPrecio(p,cant[f.medida])*f.copias+(f.iman?p.iman*f.copias:0);
+  });
+  const p710=PRECIOS["7x10"];
+  if(p710)hojasArr.filter(h=>h.slots.some(Boolean)).forEach(()=>{total+=tramoPrecio(p710,cant["7x10"]||nHojas)});
+  $("#total2").textContent=money(total);
+  return total;
+}
+
+// ---------- Navegacion ----------
+function setStep(n){
+  [1,2,3].forEach(i=>{
+    $("#p"+i).classList.toggle("hide",i!==n);
+    const st=$("#st"+i);st.classList.toggle("active",i===n);st.classList.toggle("done",i<n);
+  });
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+$("#go2").onclick=()=>{renderItems();setStep(2)};
+$("#back1").onclick=()=>setStep(1);
+$("#go3").onclick=()=>{renderResumen();chequearDatos();setStep(3)};
+$("#back2").onclick=()=>setStep(2);
+
+function renderResumen(){
+  const ORDEN=["Polaroid","10x15","13x18","15x21","20x25","20x30","25x38"];
+  const normales=fotos.filter(f=>f.medida!=="7x10");
+  const nHojas=hojasArr.filter(h=>h.slots.some(Boolean)).length;
+  const totalUnidades=normales.length; // por unidad de foto
+  const conGrilla = totalUnidades<=30;
+
+  // agrupar: medida -> {copias,iman} -> [fotos]
+  const porMedida={};
+  normales.forEach(f=>{
+    (porMedida[f.medida]=porMedida[f.medida]||[]).push(f);
+  });
+  // orden de medidas segun ORDEN, las que no esten van al final
+  const medidas=Object.keys(porMedida).sort((a,b)=>{
+    const ia=ORDEN.indexOf(a),ib=ORDEN.indexOf(b);
+    return (ia<0?99:ia)-(ib<0?99:ib);
+  });
+
+  let html="";
+  medidas.forEach(m=>{
+    const arr=porMedida[m];
+    // construir grupos por (copias,iman); orden: primero sin iman por copias, luego con iman por copias
+    const map={};
+    arr.forEach(f=>{const k=f.copias+"|"+(f.iman?1:0);(map[k]=map[k]||{copias:f.copias,iman:f.iman,fotos:[]}).fotos.push(f);});
+    const grupos=Object.values(map).sort((a,b)=>(a.iman?1:0)-(b.iman?1:0)||a.copias-b.copias);
+    const totFotos=arr.length;
+    html+=`<div class="gsec"><div class="gsec-h"><span class="badge">${m}</span><span class="gc">${totFotos} ${totFotos===1?'foto':'fotos'}</span><span class="rule"></span></div>`;
+    grupos.forEach(g=>{
+      const lbl=`${g.copias} copia${g.copias>1?'s':''}${g.iman?' · con imán':''}`;
+      html+=`<div class="ggrp-h"><span class="gl">${g.iman?'<span class="mi"><i class="ti ti-magnet"></i></span>':''}${lbl}</span><span class="qn">${g.fotos.length} ${g.fotos.length===1?'foto':'fotos'}</span><span class="gr"></span></div>`;
+      if(conGrilla){
+        html+=`<div class="ggrid">`+g.fotos.map(f=>
+          `<div class="gph"><img src="${f.url}">${f.copias>1?`<span class="cb">×${f.copias}</span>`:''}${f.iman?'<span class="mb"><i class="ti ti-magnet"></i></span>':''}</div>`
+        ).join("")+`</div>`;
+      }
+    });
+    html+=`</div>`;
+  });
+
+  // hojas 7x10 como su propia seccion
+  if(nHojas){
+    html+=`<div class="gsec"><div class="gsec-h"><span class="badge">Hojas 7x10</span><span class="gc">${nHojas} ${nHojas===1?'hoja':'hojas'}</span><span class="rule"></span></div></div>`;
+  }
+
+  // total
+  html+=`<div class="divr"></div><div class="rsum"><span>Total estimado</span><b style="color:var(--gold-light);font-size:18px">${money(calcTotal())}</b></div>`;
+  $("#resumen").innerHTML=html;
+}
+
+let HAY_BACKEND=false;
+
+// Sube un File a R2 pidiendo URL pre-firmada. Devuelve la key en R2.
+async function subirAR2(file,sesion){
+  const r=await fetch("/api/subir-url",{method:"POST",headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({nombre:file.name,tipo:file.type||"image/jpeg",sesion})});
+  if(!r.ok)throw new Error("No se pudo preparar la subida");
+  const {url,key}=await r.json();
+  const put=await fetch(url,{method:"PUT",headers:{"Content-Type":file.type||"image/jpeg"},body:file});
+  if(!put.ok)throw new Error("Falló la subida de "+file.name);
+  return key;
+}
+
+// ---------- Validacion datos del cliente ----------
+function nombreValido(v){
+  // al menos 2 palabras de 2+ letras (nombre + apellido)
+  const partes=v.trim().split(/\s+/).filter(p=>p.replace(/[^A-Za-zÁÉÍÓÚáéíóúÑñ]/g,"").length>=2);
+  return partes.length>=2;
+}
+function whatsappValido(v){
+  // formato argentino: 10 digitos (cod area + numero), ignorando espacios/guiones/parentesis
+  const d=v.replace(/\D/g,"");
+  return d.length===10;
+}
+function chequearDatos(){
+  const okN=nombreValido($("#cn").value);
+  const okW=whatsappValido($("#cw").value);
+  $("#confirm").disabled=!(okN&&okW);
+  return {okN,okW};
+}
+["cn","cw"].forEach(id=>{
+  const el=$("#"+id);
+  el.addEventListener("input",()=>{el.classList.remove("err");chequearDatos();});
+});
+
+$("#confirm").onclick=async()=>{
+  const nombre=$("#cn").value.trim();
+  const {okN,okW}=chequearDatos();
+  if(!okN){$("#cn").classList.add("err");toast("Ingresá nombre y apellido");return}
+  if(!okW){$("#cw").classList.add("err");toast("WhatsApp inválido: 10 dígitos con código de área");return}
+  const btn=$("#confirm");
+
+  if(!HAY_BACKEND){
+    // FALLBACK DEMO (archivo abierto suelto, sin servidor)
+    const base=nombre.split(/\s+/)[0].toUpperCase().replace(/[^A-ZÑ0-9]/g,"");
+    const code=base+" - "+String(Math.floor(Math.random()*40)+1).padStart(4,"0");
+    mostrarOk(code);
+    return;
+  }
+
+  btn.disabled=true;btn.textContent="Subiendo fotos…";
+  const sesion=Date.now();
+  try{
+    // 1) subir todas las fotos a R2 (normales + las de hojas 7x10)
+    const normales=fotos.filter(f=>f.medida!=="7x10");
+    const en710=[];
+    hojasArr.forEach(h=>h.slots.forEach(fid=>{if(fid){const f=fotos.find(x=>x.id===fid);if(f)en710.push(f);}}));
+    const todas=[...new Set([...normales,...en710])];
+
+    let subidas=0;
+    for(const f of todas){
+      if(!f._file)continue;
+      f._key=await subirAR2(f._file,sesion);
+      subidas++;
+      btn.textContent=`Subiendo… ${subidas}/${todas.length}`;
+    }
+
+    // 2) armar payload del pedido
+    const items=normales.map(f=>({
+      archivo:f.name,url_r2:f._key,medida:f.medida,iman:f.iman,copias:f.copias,
+      encuadre:f.encuadre,borde:f.borde,rotar:f.rotar,px:f.px,py:f.py,nota:f.nota||null
+    }));
+    const hojas=hojasArr.filter(h=>h.slots.some(Boolean)).map(h=>({
+      orientacion:h.orient==="apaisada"?"apaisada":"vertical",iman:false,copias:1,
+      fotos:h.slots.filter(Boolean).map(fid=>{
+        const f=fotos.find(x=>x.id===fid);
+        return{archivo:f.name,url_r2:f._key,encuadre:f.encuadre,rotada:f.rotada||false,px:f.px,py:f.py};
+      })
+    }));
+
+    btn.textContent="Creando pedido…";
+    const r=await fetch("/api/pedidos",{method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({cliente_nombre:nombre,whatsapp:$("#cw").value.trim(),nota:$("#cnota").value.trim(),items,hojas})});
+    if(!r.ok)throw new Error((await r.json().catch(()=>({}))).error||"Error al crear el pedido");
+    const d=await r.json();
+    mostrarOk(d.codigo);
+  }catch(e){
+    toast(e.message||"Algo falló, probá de nuevo");
+    btn.disabled=false;btn.textContent="Confirmar pedido";
+  }
+};
+
+function mostrarOk(code){
+  $("#okcode").textContent=code;
+  const txt=encodeURIComponent(`Hola! Hice un pedido de revelado. Mi número de carga es ${code}`);
+  $("#walink").href=`https://wa.me/${WA}?text=${txt}`;
+  $("#confbox").classList.add("hide");
+  $("#okbox").classList.remove("hide");
+}
+
+// Cargar precios reales si hay backend
+fetch("/api/precios").then(r=>r.ok?r.json():null).then(d=>{
+  if(!d)return;
+  HAY_BACKEND=true;
+  const map={};d.precios.forEach(p=>map[p.medida]={t1:p.precio_t1,t2:p.precio_t2,t3:p.precio_t3,iman:p.recargo_iman});
+  PRECIOS=map;TRAMOS={t1:d.tramos.tramo1_hasta,t2:d.tramos.tramo2_hasta};
+}).catch(()=>{});
+</script>
+</body>
+</html>

@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Panel · Revelado Centro Color</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0C0C0C; --bg2:#141414; --card:#1A1A1A; --card-soft:#161616;
+  --gold:#C9A961; --gold-light:#E7C77E; --cream:#F5EFE6;
+  --text-soft:#CFC8BC; --muted:#8A8A8A; --border:#2A2A2A;
+  --green:#5BB98C; --red:#E07A6F; --amber:#E0B050; --blue:#6BA8D4;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--cream);font-family:'Inter',system-ui,sans-serif;font-size:15px;line-height:1.55}
+.wrap{max-width:1080px;margin:0 auto;padding:20px 16px 60px}
+.top{display:flex;align-items:center;justify-content:space-between;padding:6px 0 18px;border-bottom:1px solid var(--border);margin-bottom:22px}
+.top .l{display:flex;align-items:center;gap:12px}
+.top .logo{width:38px;height:38px;border-radius:50%;background:radial-gradient(circle at 50% 40%,var(--gold-light),var(--gold) 70%)}
+.top h1{font-family:'Poppins',sans-serif;font-weight:600;font-size:17px}
+.top .sub{font-size:11.5px;color:var(--muted)}
+.btn{font-family:'Poppins',sans-serif;font-weight:500;font-size:14px;padding:9px 18px;border-radius:10px;border:none;cursor:pointer;background:var(--gold);color:#1a1408;transition:.2s}
+.btn:hover{background:var(--gold-light)}
+.btn.ghost{background:transparent;border:1px solid var(--border);color:var(--text-soft)}
+.btn.ghost:hover{border-color:var(--gold);color:var(--gold)}
+.btn.sm{padding:6px 13px;font-size:13px}
+input,select{font-family:inherit;font-size:14px;color:var(--cream);background:var(--bg2);border:1px solid var(--border);border-radius:9px;padding:9px 11px;outline:none;width:100%}
+input:focus,select:focus{border-color:var(--gold)}
+
+/* Login */
+.login{max-width:360px;margin:8vh auto 0;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px}
+.login .logo{width:54px;height:54px;border-radius:50%;background:radial-gradient(circle at 50% 40%,var(--gold-light),var(--gold) 70%);margin:0 auto 16px}
+.login h2{font-family:'Poppins',sans-serif;font-weight:500;text-align:center;margin-bottom:4px}
+.login p{text-align:center;color:var(--muted);font-size:13px;margin-bottom:20px}
+.login .field{margin-bottom:13px}
+.login label{display:block;font-size:12.5px;color:var(--muted);margin-bottom:5px}
+.login .err{color:var(--red);font-size:13px;text-align:center;margin-bottom:10px;min-height:18px}
+
+.hide{display:none!important}
+
+/* Filtros */
+.filters{display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap}
+.chipf{padding:7px 14px;border:1px solid var(--border);background:var(--card-soft);color:var(--text-soft);border-radius:9px;font-size:13px;cursor:pointer}
+.chipf.on{border-color:var(--gold);color:var(--gold);background:rgba(201,169,97,.08)}
+
+/* Lista pedidos */
+.plist{display:flex;flex-direction:column;gap:10px}
+.pcard{display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px;cursor:pointer;transition:.15s}
+.pcard:hover{border-color:var(--gold)}
+.pcard.nuevo{border-color:var(--blue);box-shadow:0 0 0 1px var(--blue),0 0 12px rgba(107,168,212,.15)}
+.pcard.nuevo:hover{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold)}
+.pcode{font-family:'Poppins',sans-serif;font-weight:600;font-size:14px;color:var(--gold-light);background:rgba(201,169,97,.1);padding:4px 11px;border-radius:8px;white-space:nowrap}
+.pcard .info{flex:1;min-width:0}
+.pcard .nm{font-weight:500}
+.pcard .meta{font-size:12.5px;color:var(--muted)}
+.pcard .tot{font-family:'Poppins',sans-serif;font-weight:600;font-size:16px;color:var(--cream)}
+.estado{font-size:11.5px;padding:4px 11px;border-radius:7px;font-weight:500;white-space:nowrap}
+.e-nuevo{background:rgba(107,168,212,.15);color:var(--blue)}
+.e-en_proceso{background:rgba(224,176,80,.15);color:var(--amber)}
+.e-listo{background:rgba(91,185,140,.15);color:var(--green)}
+.e-entregado{background:rgba(138,138,138,.15);color:var(--muted)}
+.empty{text-align:center;color:var(--muted);padding:50px 20px;font-size:14px}
+
+/* Detalle */
+.back{display:inline-flex;align-items:center;gap:6px;color:var(--text-soft);font-size:14px;cursor:pointer;margin-bottom:16px;background:none;border:none;font-family:inherit}
+.back:hover{color:var(--gold)}
+.dethead{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap;margin-bottom:18px}
+.dethead .nm{font-family:'Poppins',sans-serif;font-weight:600;font-size:20px}
+.dethead .wa{color:var(--text-soft);font-size:13.5px;margin-top:3px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:18px}
+.stat{background:var(--card);border:1px solid var(--border);border-radius:11px;padding:12px 14px}
+.stat .k{font-size:12px;color:var(--muted)}
+.stat .v{font-family:'Poppins',sans-serif;font-weight:600;font-size:20px;margin-top:2px}
+.acts{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:20px}
+.sectit{font-family:'Poppins',sans-serif;font-weight:500;font-size:15px;margin:0 0 11px}
+.box{background:var(--card);border:1px solid var(--border);border-radius:13px;padding:16px;margin-bottom:14px}
+.fotogrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.fcard{background:var(--card-soft);border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.fcard .ph{width:100%;aspect-ratio:4/3;object-fit:cover;background:var(--bg2);display:block}
+.fcard .cap{padding:8px 10px;font-size:12px}
+.fcard .cap .m{font-weight:500;color:var(--gold-light)}
+.fcard .cap .d{color:var(--muted);font-size:11px;margin-top:2px}
+.fcard .dl{display:block;text-align:center;padding:7px;font-size:12px;color:var(--gold);border-top:1px solid var(--border);text-decoration:none;cursor:pointer}
+.fcard .dl:hover{background:rgba(201,169,97,.06)}
+.estado-sel{display:flex;gap:7px;flex-wrap:wrap}
+.estado-sel button{padding:8px 14px;border:1px solid var(--border);background:var(--bg2);color:var(--text-soft);border-radius:9px;font-size:13px;cursor:pointer;font-family:inherit}
+.estado-sel button.on{border-color:var(--gold);color:var(--gold);background:rgba(201,169,97,.08)}
+.nota-cli{background:var(--card);border:1px solid var(--border);border-radius:11px;padding:14px;font-size:14px;color:var(--text-soft)}
+.badge-comp{font-size:10.5px;color:var(--green);background:rgba(91,185,140,.12);padding:2px 7px;border-radius:5px;margin-left:6px}
+.badge-pend{font-size:10.5px;color:var(--amber);background:rgba(224,176,80,.12);padding:2px 7px;border-radius:5px;margin-left:6px}
+
+/* Precios */
+.ptable{width:100%;border-collapse:collapse;font-size:13.5px}
+.ptable th{text-align:right;padding:8px;color:var(--muted);font-weight:500;font-size:12.5px}
+.ptable th:first-child{text-align:left}
+.ptable td{padding:5px 8px;border-top:1px solid var(--border)}
+.ptable td:first-child{font-weight:500}
+.ptable input{text-align:right;padding:7px 9px}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--card);border:1px solid var(--gold);color:var(--cream);padding:11px 18px;border-radius:10px;font-size:14px;z-index:60;opacity:0;transition:.3s;pointer-events:none}
+.toast.show{opacity:1}
+.spin{width:30px;height:30px;border:3px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:sp .8s linear infinite;margin:40px auto}
+@keyframes sp{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginView" class="login">
+  <div class="logo"></div>
+  <h2>Panel de revelado</h2>
+  <p>Centro Color</p>
+  <div class="err" id="loginErr"></div>
+  <div class="field"><label>Usuario</label><input type="text" id="u" autocomplete="username"></div>
+  <div class="field"><label>Contraseña</label><input type="password" id="p" autocomplete="current-password"></div>
+  <button class="btn" style="width:100%;margin-top:6px" id="loginBtn">Entrar</button>
+</div>
+
+<!-- APP -->
+<div id="appView" class="wrap hide">
+  <div class="top">
+    <div class="l">
+      <div class="logo"></div>
+      <div><h1>Revelado</h1><div class="sub">Panel de pedidos</div></div>
+    </div>
+    <div style="display:flex;gap:9px">
+      <button class="btn ghost sm hide" id="usuariosBtn">Usuarios</button>
+      <button class="btn ghost sm hide" id="preciosBtn">Precios</button>
+      <button class="btn ghost sm" id="logoutBtn">Salir</button>
+    </div>
+  </div>
+
+  <!-- LISTA -->
+  <div id="listView">
+    <div class="filters" id="filters">
+      <span class="chipf on" data-e="">Todos</span>
+      <span class="chipf" data-e="nuevo">Nuevos</span>
+      <span class="chipf" data-e="en_proceso">En proceso</span>
+      <span class="chipf" data-e="listo">Listos</span>
+      <span class="chipf" data-e="entregado">Entregados</span>
+    </div>
+    <div id="plist" class="plist"></div>
+  </div>
+
+  <!-- DETALLE -->
+  <div id="detView" class="hide"></div>
+
+  <!-- PRECIOS -->
+  <div id="preciosView" class="hide"></div>
+
+  <!-- USUARIOS -->
+  <div id="usuariosView" class="hide"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+let TOKEN = localStorage.getItem("rev_token") || "";
+let ROL = "";
+let filtro = "";
+const $ = s=>document.querySelector(s);
+// Lee el rol del payload del JWT (sin verificar firma, solo para UI)
+function rolDeToken(t){
+  try{return JSON.parse(atob(t.split(".")[1])).rol||"";}catch{return"";}
+}
+const money = n=>"$"+Math.round(n||0).toLocaleString("es-AR");
+const ESTADOS = {nuevo:"Nuevo",en_proceso:"En proceso",listo:"Listo",entregado:"Entregado"};
+function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2200);}
+
+// ---- AVISO EN LA PESTAÑA (title flash) ----
+const TITULO_BASE="Revelado · Centro Color";
+let pollTimer=null;
+function setTitulo(n){
+  document.title = n>0 ? `🔴 (${n}) Nuevo pedido` : TITULO_BASE;
+}
+async function chequearNuevos(){
+  try{
+    const {nuevos}=await api("/api/admin/pedidos-nuevos");
+    setTitulo(nuevos);
+  }catch{/* sesión vencida u offline: no toca el título */}
+}
+function iniciarPolling(){
+  if(pollTimer)return;
+  chequearNuevos();                       // chequeo inmediato al entrar
+  pollTimer=setInterval(chequearNuevos,30000);  // y cada 30s
+}
+function pararPolling(){
+  if(pollTimer){clearInterval(pollTimer);pollTimer=null;}
+  document.title=TITULO_BASE;
+}
+
+async function api(path,opts={}){
+  const r=await fetch(path,{...opts,headers:{"Content-Type":"application/json","Authorization":"Bearer "+TOKEN,...(opts.headers||{})}});
+  if(r.status===401){logout();throw new Error("Sesión vencida");}
+  if(!r.ok)throw new Error((await r.json().catch(()=>({}))).error||"Error");
+  return r.json();
+}
+
+// ---- LOGIN ----
+$("#loginBtn").onclick=login;
+$("#p").onkeydown=e=>{if(e.key==="Enter")login();};
+async function login(){
+  $("#loginErr").textContent="";
+  try{
+    const r=await fetch("/api/admin/login",{method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({username:$("#u").value,password:$("#p").value})});
+    if(!r.ok){$("#loginErr").textContent="Usuario o contraseña incorrectos";return;}
+    const d=await r.json();
+    TOKEN=d.token;localStorage.setItem("rev_token",TOKEN);
+    showApp();
+  }catch{$("#loginErr").textContent="No se pudo conectar";}
+}
+function logout(){pararPolling();TOKEN="";localStorage.removeItem("rev_token");$("#appView").classList.add("hide");$("#loginView").classList.remove("hide");}
+$("#logoutBtn").onclick=logout;
+
+function showApp(){
+  ROL=rolDeToken(TOKEN);
+  $("#loginView").classList.add("hide");
+  $("#appView").classList.remove("hide");
+  // botones solo admin
+  $("#preciosBtn").classList.toggle("hide",ROL!=="admin");
+  $("#usuariosBtn").classList.toggle("hide",ROL!=="admin");
+  iniciarPolling();
+  verLista();
+}
+
+// ---- NAV ----
+function vista(v){
+  ["listView","detView","preciosView","usuariosView"].forEach(x=>$("#"+x).classList.add("hide"));
+  $("#"+v).classList.remove("hide");
+}
+$("#preciosBtn").onclick=verPrecios;
+$("#usuariosBtn").onclick=verUsuarios;
+
+// ---- LISTA ----
+$("#filters").querySelectorAll(".chipf").forEach(c=>{
+  c.onclick=()=>{
+    $("#filters").querySelectorAll(".chipf").forEach(x=>x.classList.remove("on"));
+    c.classList.add("on");filtro=c.dataset.e;verLista();
+  };
+});
+async function verLista(){
+  vista("listView");
+  $("#plist").innerHTML='<div class="spin"></div>';
+  try{
+    const q=filtro?("?estado="+filtro):"";
+    const pedidos=await api("/api/admin/pedidos"+q);
+    if(!pedidos.length){$("#plist").innerHTML='<div class="empty">No hay pedidos'+(filtro?" en este estado":"")+".</div>";return;}
+    $("#plist").innerHTML=pedidos.map(p=>`
+      <div class="pcard ${p.estado==='nuevo'?'nuevo':''}" onclick="verDetalle(${p.id})">
+        <span class="pcode">${p.codigo}</span>
+        <div class="info">
+          <div class="nm">${p.cliente_nombre||"—"}</div>
+          <div class="meta">${fecha(p.creado)}${p.whatsapp?" · "+p.whatsapp:""}</div>
+        </div>
+        <span class="tot">${money(p.total)}</span>
+        <span class="estado e-${p.estado}">${ESTADOS[p.estado]||p.estado}</span>
+      </div>`).join("");
+  }catch(e){$("#plist").innerHTML='<div class="empty">'+e.message+'</div>';}
+  if(pollTimer)chequearNuevos();
+}
+function fecha(s){
+  if(!s)return"";
+  const d=new Date(s.replace(" ","T"));
+  return d.toLocaleString("es-AR",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"});
+}
+
+// ---- DETALLE ----
+window.verDetalle=async id=>{
+  vista("detView");
+  $("#detView").innerHTML='<div class="spin"></div>';
+  try{
+    const {pedido,items,hojas}=await api("/api/admin/pedidos/"+id);
+    const copias=items.reduce((a,i)=>a+i.copias,0)+hojas.reduce((a,h)=>a+h.copias,0);
+    const conIman=items.filter(i=>i.iman).reduce((a,i)=>a+i.copias,0)+hojas.filter(h=>h.iman).reduce((a,h)=>a+h.copias,0);
+    $("#detView").innerHTML=`
+      <button class="back" onclick="verLista()">← Volver a pedidos</button>
+      <div class="dethead">
+        <div>
+          <div class="nm">${pedido.cliente_nombre||"—"} <span class="pcode">${pedido.codigo}</span></div>
+          <div class="wa">${pedido.whatsapp?("WhatsApp "+pedido.whatsapp+" · "):""}${fecha(pedido.creado)}</div>
+        </div>
+        <span class="estado e-${pedido.estado}">${ESTADOS[pedido.estado]}</span>
+      </div>
+      <div class="stats">
+        <div class="stat"><div class="k">Fotos</div><div class="v">${items.length+hojas.length}</div></div>
+        <div class="stat"><div class="k">Copias</div><div class="v">${copias}</div></div>
+        <div class="stat"><div class="k">Total</div><div class="v">${money(pedido.total)}</div></div>
+      </div>
+      <div class="acts">
+        ${pedido.fotos_estado==='eliminadas'
+          ? `<span class="estado e-entregado" style="padding:9px 14px">🗑 Fotos eliminadas</span>`
+          : `<a class="btn" href="/api/admin/pedidos/${id}/zip?t=${encodeURIComponent(TOKEN)}" download>⬇ Descargar todo (ZIP)</a>
+             <button class="btn ghost" id="regen-${id}" onclick="regenerar(${id})">♻ Regenerar fotos</button>
+             <button class="btn ghost" id="limp-${id}" onclick="askLimpiar(${id})">🧹 Limpiar fotos</button>`}
+        ${ROL==="admin"?`<button class="btn ghost" id="delped-${id}" onclick="askBorrarPedido(${id})">🗑 Borrar pedido</button>`:""}
+      </div>
+      <div class="box">
+        <div class="sectit">Estado del pedido</div>
+        <div class="estado-sel">
+          ${Object.entries(ESTADOS).map(([k,v])=>`<button class="${pedido.estado===k?'on':''}" onclick="cambiarEstado(${id},'${k}')">${v}</button>`).join("")}
+        </div>
+      </div>
+      ${pedido.nota?`<div class="box"><div class="sectit">Nota del cliente</div><div class="nota-cli">${pedido.nota}</div></div>`:""}
+      ${pedido.fotos_estado==='eliminadas'
+        ? `<div class="box"><div class="nota-cli">Las fotos de este pedido fueron eliminadas para liberar espacio. El registro (código, cliente, total y fecha) se conserva.</div></div>`
+        : `${items.length?`<div class="box"><div class="sectit">Fotos (${items.length})</div><div class="fotogrid">${items.map(fotoCard).join("")}</div></div>`:""}
+           ${hojas.length?`<div class="box"><div class="sectit">Hojas 7x10 (${hojas.length})</div><div class="fotogrid">${hojas.map(hojaCard).join("")}</div></div>`:""}`}
+    `;
+  }catch(e){$("#detView").innerHTML='<button class="back" onclick="verLista()">← Volver</button><div class="empty">'+e.message+'</div>';}
+};
+function fotoCard(it){
+  const lista=it.url_lista_firmada;
+  // Mostrar la compuesta (lista para imprimir). Si todavía no está, mostrar la
+  // original SOLO como vista previa, pero sin permitir descargarla.
+  return `<div class="fcard">
+    <img class="ph" src="${lista||it.url||''}" loading="lazy">
+    <div class="cap">
+      <div class="m">${it.medida}${it.iman?' · imán':''}${it.borde?' · borde':''}${lista?'<span class="badge-comp">lista</span>':'<span class="badge-pend">procesando</span>'}</div>
+      <div class="d">${it.archivo} · ${it.copias} ${it.copias>1?'copias':'copia'}${it.nota?' · "'+it.nota+'"':''}</div>
+    </div>
+    ${lista?`<a class="dl" href="${lista}" download>⬇ descargar lista</a>`:'<span class="dl" style="color:var(--muted);cursor:default">sin componer</span>'}
+  </div>`;
+}
+function hojaCard(h){
+  const c=h.url_compuesta_firmada;
+  return `<div class="fcard">
+    <img class="ph" src="${c||''}" loading="lazy" style="aspect-ratio:${h.orientacion==='vertical'?'3/4':'4/3'}">
+    <div class="cap">
+      <div class="m">Hoja 7x10 · ${h.orientacion}${c?'<span class="badge-comp">lista</span>':'<span class="badge-pend">procesando</span>'}</div>
+      <div class="d">${h.copias} ${h.copias>1?'copias':'copia'}${h.iman?' · imán':''}</div>
+    </div>
+    ${c?`<a class="dl" href="${c}" download>⬇ descargar hoja</a>`:''}
+  </div>`;
+}
+window.cambiarEstado=async(id,e)=>{
+  try{await api("/api/admin/pedidos/"+id+"/estado",{method:"PUT",body:JSON.stringify({estado:e})});toast("Estado actualizado");verDetalle(id);}
+  catch(err){toast(err.message);}
+};
+
+// ---- PRECIOS ----
+async function verPrecios(){
+  vista("preciosView");
+  $("#preciosView").innerHTML='<div class="spin"></div>';
+  try{
+    const {precios,tramos}=await api("/api/admin/precios");
+    $("#preciosView").innerHTML=`
+      <button class="back" onclick="verLista()">← Volver a pedidos</button>
+      <div class="dethead"><div class="nm">Precios</div>
+        <button class="btn" onclick="guardarPrecios()">Guardar cambios</button></div>
+      <div class="box">
+        <div class="sectit">Tramos por cantidad</div>
+        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:14px;color:var(--text-soft)">
+          <span>1 a</span><input id="t1" type="number" value="${tramos.tramo1_hasta}" style="width:80px">
+          <span>· siguiente hasta</span><input id="t2" type="number" value="${tramos.tramo2_hasta}" style="width:80px">
+          <span>· de ahí en más, tramo 3</span>
+        </div>
+      </div>
+      <div class="box">
+        <table class="ptable">
+          <thead><tr><th>Medida</th><th>1–${tramos.tramo1_hasta}</th><th>${tramos.tramo1_hasta+1}–${tramos.tramo2_hasta}</th><th>${tramos.tramo2_hasta+1}+</th><th>Imán</th></tr></thead>
+          <tbody>${precios.map(p=>`<tr data-id="${p.id}">
+            <td>${p.medida}</td>
+            <td><input type="number" value="${p.precio_t1}" data-f="precio_t1"></td>
+            <td><input type="number" value="${p.precio_t2}" data-f="precio_t2"></td>
+            <td><input type="number" value="${p.precio_t3}" data-f="precio_t3"></td>
+            <td><input type="number" value="${p.recargo_iman}" data-f="recargo_iman"></td>
+          </tr>`).join("")}</tbody>
+        </table>
+      </div>`;
+  }catch(e){$("#preciosView").innerHTML='<button class="back" onclick="verLista()">← Volver</button><div class="empty">'+e.message+'</div>';}
+}
+window.guardarPrecios=async()=>{
+  const precios=[...document.querySelectorAll(".ptable tbody tr")].map(tr=>{
+    const o={id:+tr.dataset.id};
+    tr.querySelectorAll("input").forEach(i=>o[i.dataset.f]=+i.value);
+    return o;
+  });
+  const tramos={tramo1_hasta:+$("#t1").value,tramo2_hasta:+$("#t2").value};
+  try{await api("/api/admin/precios",{method:"PUT",body:JSON.stringify({precios,tramos})});toast("Precios guardados");}
+  catch(e){toast(e.message);}
+};
+
+// ---- REGENERAR COMPOSICIÓN (admin y empleado) ----
+window.regenerar=async id=>{
+  const b=document.getElementById("regen-"+id);
+  if(b){b.disabled=true;b.textContent="♻ Regenerando…";}
+  try{
+    const r=await api("/api/admin/pedidos/"+id+"/regenerar",{method:"POST"});
+    toast(`Fotos regeneradas (${r.ok} ok${r.fallo?', '+r.fallo+' con error':''})`);
+    verDetalle(id);
+  }catch(e){toast(e.message);if(b){b.disabled=false;b.textContent="♻ Regenerar fotos";}}
+};
+
+// ---- LIMPIAR FOTOS (admin y empleado) ----
+window.askLimpiar=id=>{
+  const b=document.getElementById("limp-"+id);
+  if(!b)return;
+  if(b.dataset.c){limpiarFotos(id);return;}
+  b.dataset.c="1";b.textContent="¿Borrar fotos? (irreversible)";b.style.borderColor="var(--red)";b.style.color="var(--red)";
+  setTimeout(()=>{if(b&&b.dataset.c){b.dataset.c="";b.textContent="🧹 Limpiar fotos";b.style.borderColor="";b.style.color="";}},3500);
+};
+async function limpiarFotos(id){
+  try{await api("/api/admin/pedidos/"+id+"/limpiar",{method:"POST"});toast("Fotos eliminadas de R2");verDetalle(id);}
+  catch(e){toast(e.message);}
+}
+
+// ---- BORRAR PEDIDO (admin) ----
+window.askBorrarPedido=id=>{
+  const b=document.getElementById("delped-"+id);
+  if(!b)return;
+  if(b.dataset.c){borrarPedido(id);return;}
+  b.dataset.c="1";b.textContent="¿Confirmar borrado?";b.style.borderColor="var(--red)";b.style.color="var(--red)";
+  setTimeout(()=>{if(b&&b.dataset.c){b.dataset.c="";b.textContent="🗑 Borrar pedido";b.style.borderColor="";b.style.color="";}},2800);
+};
+async function borrarPedido(id){
+  try{await api("/api/admin/pedidos/"+id,{method:"DELETE"});toast("Pedido borrado");verLista();}
+  catch(e){toast(e.message);}
+}
+
+// ---- USUARIOS (admin) ----
+async function verUsuarios(){
+  vista("usuariosView");
+  $("#usuariosView").innerHTML='<div class="spin"></div>';
+  try{
+    const us=await api("/api/admin/usuarios");
+    $("#usuariosView").innerHTML=`
+      <button class="back" onclick="verLista()">← Volver a pedidos</button>
+      <div class="dethead"><div class="nm">Usuarios</div></div>
+      <div class="box">
+        <div class="sectit">Crear usuario</div>
+        <div style="display:flex;gap:9px;flex-wrap:wrap;align-items:flex-end">
+          <div style="flex:1;min-width:120px"><label style="font-size:12px;color:var(--muted)">Usuario</label><input id="nu_user" placeholder="ej. fran"></div>
+          <div style="flex:1;min-width:120px"><label style="font-size:12px;color:var(--muted)">Nombre</label><input id="nu_nombre" placeholder="Nombre"></div>
+          <div style="flex:1;min-width:120px"><label style="font-size:12px;color:var(--muted)">Contraseña</label><input id="nu_pass" type="text" placeholder="clave"></div>
+          <div style="min-width:120px"><label style="font-size:12px;color:var(--muted)">Rol</label>
+            <select id="nu_rol"><option value="empleado">Empleado</option><option value="admin">Admin</option></select></div>
+          <button class="btn" onclick="crearUsuario()">Crear</button>
+        </div>
+        <p style="font-size:12px;color:var(--muted);margin-top:8px">Empleado: ve pedidos, descarga y cambia estados. Admin: además precios, usuarios y borrar.</p>
+      </div>
+      <div class="box">
+        <div class="sectit">Usuarios actuales</div>
+        <div class="plist">${us.map(u=>userRow(u)).join("")}</div>
+      </div>`;
+  }catch(e){$("#usuariosView").innerHTML='<button class="back" onclick="verLista()">← Volver</button><div class="empty">'+e.message+'</div>';}
+}
+function userRow(u){
+  return `<div class="pcard" style="cursor:default">
+    <span class="pcode">${u.username}</span>
+    <div class="info"><div class="nm">${u.nombre}</div><div class="meta">${u.rol==="admin"?"Administrador":"Empleado"}${u.activo?"":" · inactivo"}</div></div>
+    <button class="btn ghost sm" onclick="resetPass(${u.id},'${u.username}')">Cambiar clave</button>
+    <button class="btn ghost sm" id="delu-${u.id}" onclick="askBorrarUsuario(${u.id})">✕</button>
+  </div>`;
+}
+window.crearUsuario=async()=>{
+  const body={username:$("#nu_user").value,nombre:$("#nu_nombre").value,password:$("#nu_pass").value,rol:$("#nu_rol").value};
+  if(!body.username||!body.password){toast("Falta usuario o contraseña");return;}
+  try{await api("/api/admin/usuarios",{method:"POST",body:JSON.stringify(body)});toast("Usuario creado");verUsuarios();}
+  catch(e){toast(e.message);}
+};
+window.resetPass=async(id,user)=>{
+  const np=prompt("Nueva contraseña para "+user+":");
+  if(!np)return;
+  try{await api("/api/admin/usuarios/"+id,{method:"PUT",body:JSON.stringify({password:np})});toast("Contraseña actualizada");}
+  catch(e){toast(e.message);}
+};
+window.askBorrarUsuario=id=>{
+  const b=document.getElementById("delu-"+id);
+  if(!b)return;
+  if(b.dataset.c){borrarUsuario(id);return;}
+  b.dataset.c="1";b.textContent="¿?";b.style.borderColor="var(--red)";b.style.color="var(--red)";
+  setTimeout(()=>{if(b&&b.dataset.c){b.dataset.c="";b.textContent="✕";b.style.borderColor="";b.style.color="";}},2500);
+};
+async function borrarUsuario(id){
+  try{await api("/api/admin/usuarios/"+id,{method:"DELETE"});toast("Usuario borrado");verUsuarios();}
+  catch(e){toast(e.message);}
+}
+
+// ---- INIT ----
+if(TOKEN){
+  // validar token cargando lista
+  api("/api/admin/pedidos").then(()=>showApp()).catch(()=>logout());
+}
+</script>
+</body>
+</html>
